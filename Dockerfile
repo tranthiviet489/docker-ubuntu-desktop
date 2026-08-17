@@ -79,12 +79,6 @@ RUN apt-get update \
     && rm -rf /var/cache/apt/* /tmp/a.txt /tmp/b.txt
 
 
-################################################################################
-# builder
-################################################################################
-FROM ubuntu:20.04 as builder
-
-
 RUN sed -i 's#http://archive.ubuntu.com/ubuntu/#mirror://mirrors.ubuntu.com/mirrors.txt#' /etc/apt/sources.list;
 
 
