@@ -12,5 +12,10 @@ RUN wget --tries=3 --timeout=30 -qO /bin/ttyd https://github.com/tsl0922/ttyd/re
 
 EXPOSE 8080
 
-# Thêm lệnh CMD để chạy ttyd trên cổng 8080 với giao diện bash shell
-CMD ["ttyd", "-p", "8080", "bash"]
+CMD ["/bin/bash", "-c", "\
+    echo \"export PS1='\\[\\033[01;32m\\]${USERNAME:-user}@\\h\\[\\033[00m\\]:\\[\\033[01;34m\\]\\w\\[\\033[00m\\]\\$ '\" >> /root/.bashrc && \
+    if [ -n \"$USERNAME\" ] && [ -n \"$PASSWORD\" ]; then \
+        exec /bin/ttyd -p ${PORT:-8080} -W -c \"$USERNAME:$PASSWORD\" /bin/bash; \
+    else \
+        exec /bin/ttyd -p ${PORT:-8080} -W /bin/bash; \
+    fi"]
